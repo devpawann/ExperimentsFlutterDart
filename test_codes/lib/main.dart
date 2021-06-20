@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,54 +13,74 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
+  AndroidDeviceInfo? androidDeviceInfo;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Device info"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Device model is ${androidDeviceInfo?.model}"),
+          Text("Device type is ${androidDeviceInfo?.type}"),
+          Text("Device androidId is ${androidDeviceInfo?.androidId}"),
+          Text(
+              "Device androidId length is ${androidDeviceInfo?.androidId?.length}"),
+          Text("Device board is ${androidDeviceInfo?.board}"),
+          Text("Device bootloader is ${androidDeviceInfo?.bootloader}"),
+          Text("Device brand is ${androidDeviceInfo?.brand}"),
+          Text("Device device is ${androidDeviceInfo?.device}"),
+          Text("Device Id is ${androidDeviceInfo?.id}"),
+          ElevatedButton(
+              onPressed: () async {
+                DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                AndroidDeviceInfo x = await deviceInfo.androidInfo;
+                setState(() {
+                  androidDeviceInfo = x;
+                });
+              },
+              child: Text("Get Device Id")),
+          Container(
+            width: double.infinity,
+          )
+        ],
       ),
     );
   }
 }
+// required this.version,
+// this.board,
+// this.bootloader,
+// this.brand,
+// this.device,
+// this.display,
+// this.fingerprint,
+// this.hardware,
+// this.host,
+// this.id,
+// this.manufacturer,
+// this.model,
+// this.product,
+// required List<String?> supported32BitAbis,
+// required List<String?> supported64BitAbis,
+// required List<String?> supportedAbis,
+// this.tags,
+// this.type,
+// this.isPhysicalDevice,
+// this.androidId,
