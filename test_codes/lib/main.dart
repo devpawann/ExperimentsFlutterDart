@@ -8,12 +8,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("check");
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
@@ -31,11 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Device info"),
+        title: const Text("Device info"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text("Device model is ${androidDeviceInfo?.model}"),
           Text("Device type is ${androidDeviceInfo?.type}"),
@@ -49,13 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Text("Device Id is ${androidDeviceInfo?.id}"),
           ElevatedButton(
               onPressed: () async {
-                DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
                 AndroidDeviceInfo x = await deviceInfo.androidInfo;
                 setState(() {
                   androidDeviceInfo = x;
                 });
               },
-              child: Text("Get Device Id")),
+              child: const Text("Get Device Id")),
           Container(
             width: double.infinity,
           )
