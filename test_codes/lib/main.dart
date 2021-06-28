@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,12 +28,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  dynamic batteryLevel;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  Future<void> getBatteryLevel() async {
+    const platForm = MethodChannel("pawan.method/channel");
+    try {
+      final b = await platForm.invokeMethod("getBatteryLevel");
+      setState(() {
+        batteryLevel = b;
+      });
+    } catch (e) {
+      setState(() {
+        batteryLevel = "Error on getting";
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getBatteryLevel();
+    super.initState();
   }
 
   @override
@@ -42,23 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Text("Hello $batteryLevel"),
       ),
     );
   }
