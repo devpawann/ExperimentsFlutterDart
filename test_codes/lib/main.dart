@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_codes/cubit/counter/counter_cubit.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BlocProvider(
+    create: (context) => CounterCubit(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,53 +17,55 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  int num = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          BlocProvider.of<CounterCubit>(context).incrementCounter(num);
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Hydrated"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: BlocConsumer<CounterCubit, CounterState>(
+          listener: (context, state) {
+            state.when(initial: (i) {}, loading: () {}, incremented: (i) {});
+          },
+          builder: (context, state) {
+            return state.when(initial: (i) {
+              num = i;
+              return Text(
+                "$i",
+                style: const TextStyle(fontSize: 30),
+              );
+            }, loading: () {
+              return const CircularProgressIndicator();
+            }, incremented: (i) {
+              num = i;
+              return Text(
+                "$i",
+                style: const TextStyle(fontSize: 30),
+              );
+            });
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
