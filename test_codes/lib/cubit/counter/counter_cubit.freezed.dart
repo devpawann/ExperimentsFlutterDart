@@ -12,6 +12,20 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CounterState _$CounterStateFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'initial':
+      return Initial.fromJson(json);
+    case 'loading':
+      return Loading.fromJson(json);
+    case 'incremented':
+      return Incremented.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
 /// @nodoc
 class _$CounterStateTearOff {
   const _$CounterStateTearOff();
@@ -30,6 +44,10 @@ class _$CounterStateTearOff {
     return Incremented(
       num: num,
     );
+  }
+
+  CounterState fromJson(Map<String, Object> json) {
+    return CounterState.fromJson(json);
   }
 }
 
@@ -68,6 +86,7 @@ mixin _$CounterState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -116,9 +135,12 @@ class _$InitialCopyWithImpl<$Res> extends _$CounterStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Initial implements Initial {
   _$Initial({required this.num});
+
+  factory _$Initial.fromJson(Map<String, dynamic> json) =>
+      _$_$InitialFromJson(json);
 
   @override
   final int num;
@@ -192,10 +214,17 @@ class _$Initial implements Initial {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$InitialToJson(this)..['runtimeType'] = 'initial';
+  }
 }
 
 abstract class Initial implements CounterState {
   factory Initial({required int num}) = _$Initial;
+
+  factory Initial.fromJson(Map<String, dynamic> json) = _$Initial.fromJson;
 
   int get num => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -219,9 +248,12 @@ class _$LoadingCopyWithImpl<$Res> extends _$CounterStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Loading implements Loading {
   _$Loading();
+
+  factory _$Loading.fromJson(Map<String, dynamic> json) =>
+      _$_$LoadingFromJson(json);
 
   @override
   String toString() {
@@ -283,10 +315,17 @@ class _$Loading implements Loading {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$LoadingToJson(this)..['runtimeType'] = 'loading';
+  }
 }
 
 abstract class Loading implements CounterState {
   factory Loading() = _$Loading;
+
+  factory Loading.fromJson(Map<String, dynamic> json) = _$Loading.fromJson;
 }
 
 /// @nodoc
@@ -321,9 +360,12 @@ class _$IncrementedCopyWithImpl<$Res> extends _$CounterStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Incremented implements Incremented {
   _$Incremented({required this.num});
+
+  factory _$Incremented.fromJson(Map<String, dynamic> json) =>
+      _$_$IncrementedFromJson(json);
 
   @override
   final int num;
@@ -397,10 +439,18 @@ class _$Incremented implements Incremented {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$IncrementedToJson(this)..['runtimeType'] = 'incremented';
+  }
 }
 
 abstract class Incremented implements CounterState {
   factory Incremented({required int num}) = _$Incremented;
+
+  factory Incremented.fromJson(Map<String, dynamic> json) =
+      _$Incremented.fromJson;
 
   int get num => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
