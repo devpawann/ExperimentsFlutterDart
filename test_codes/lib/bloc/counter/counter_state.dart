@@ -1,6 +1,11 @@
 part of 'counter_cubit.dart';
 
-@immutable
-abstract class CounterState {}
+@freezed
+class CounterState with _$CounterState {
+  const factory CounterState.initial({required int num}) = Initial;
+  const factory CounterState.loading() = Loading;
+  const factory CounterState.loaded(int num) = Loaded;
 
-class CounterInitial extends CounterState {}
+  factory CounterState.fromJson(Map<String, dynamic> json) =>
+      _$CounterStateFromJson(json); //Add this line
+}
